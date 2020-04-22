@@ -51,10 +51,10 @@
 
 
    <mvc:interceptors>
-<!--        <mvc:interceptor>
+        <mvc:interceptor>
             <mvc:mapping path="/**"/>
-            <bean class="com.liuyanzhao.ssm.blog.interceptor.HomeResourceInterceptor"/>
-        </mvc:interceptor>-->
+            <bean class="com.xcy.blog.interceptor.HomeResourceInterceptor"/>
+        </mvc:interceptor>
 
         <mvc:interceptor>
             <mvc:mapping path="/admin/**"/>

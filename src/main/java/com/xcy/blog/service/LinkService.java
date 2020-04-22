@@ -12,6 +12,13 @@ public interface LinkService {
     public List<Link> listLink();
 
     /**
+     * 查询所有该状态的链接
+     * @param status
+     * @return
+     */
+    public List<Link> listLinkByStatus(Integer status);
+
+    /**
      * 新增链接
      * @param link
      * @return
@@ -38,4 +45,11 @@ public interface LinkService {
      * @return
      */
     public Integer updateLink(Link link);
+
+    /**
+     * 查询所有链接数量
+     * @param status
+     * @return
+     */
+    public Integer countLink(Integer status);
 }

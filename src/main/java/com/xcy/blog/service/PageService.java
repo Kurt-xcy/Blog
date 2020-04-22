@@ -47,4 +47,11 @@ public interface PageService {
      */
     public Integer updatePage(Page page);
 
+    /**
+     * 根据key和状态查询页面
+     * @param status
+     * @param key
+     * @return
+     */
+    public Page getPageByKeyAndStatus(Integer status,String key);
 }

@@ -51,4 +51,9 @@ public class TagServiceImpl implements TagService {
     public Integer updateTag(Tag tag) {
         return tagMapper.updateByPrimaryKey(tag);
     }
+
+    @Override
+    public Integer countTag() {
+        return tagMapper.countByExample(new TagExample());
+    }
 }

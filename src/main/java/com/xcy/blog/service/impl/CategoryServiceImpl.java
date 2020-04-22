@@ -54,4 +54,9 @@ public class CategoryServiceImpl implements CategoryService {
     public Integer updateCategory(Category category) {
         return categoryMapper.updateByPrimaryKey(category);
     }
+
+    @Override
+    public Integer countCategory() {
+        return categoryMapper.countByExample(new CategoryExample());
+    }
 }

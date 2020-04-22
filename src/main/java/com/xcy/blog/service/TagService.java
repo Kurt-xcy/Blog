@@ -44,4 +44,10 @@ public interface TagService {
      * @return
      */
     public Integer updateTag(Tag tag);
+
+    /**
+     * 查询所有标签
+     * @return
+     */
+    public Integer countTag();
 }

@@ -12,6 +12,12 @@ public interface NoticeService {
     public List<Notice> listNotice();
 
     /**
+     * 查询所有该状态的公告
+     * @param status
+     * @return
+     */
+    public List<Notice> listNoticeByStatus(Integer status);
+    /**
      * 新增公告
      * @param notice
      * @return

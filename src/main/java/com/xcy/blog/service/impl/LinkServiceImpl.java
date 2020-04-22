@@ -19,6 +19,13 @@ public class LinkServiceImpl implements LinkService {
     }
 
     @Override
+    public List<Link> listLinkByStatus(Integer status) {
+        LinkExample example = new LinkExample();
+        example.createCriteria().andLinkStatusEqualTo(status);
+        return linkMapper.selectByExample(example);
+    }
+
+    @Override
     public Integer insertLink(Link link) {
         return linkMapper.insert(link);
     }
@@ -36,5 +43,12 @@ public class LinkServiceImpl implements LinkService {
     @Override
     public Integer updateLink(Link link) {
         return linkMapper.updateByPrimaryKey(link);
+    }
+
+    @Override
+    public Integer countLink(Integer status) {
+        LinkExample example = new LinkExample();
+        example.createCriteria().andLinkStatusEqualTo(status);
+        return linkMapper.countByExample(example);
     }
 }

@@ -20,6 +20,13 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
+    public List<Notice> listNoticeByStatus(Integer status) {
+        NoticeExample example = new NoticeExample();
+        example.createCriteria().andNoticeStatusEqualTo(status);
+        return noticeMapper.selectByExample(example);
+    }
+
+    @Override
     public Integer insertNotice(Notice notice) {
         return noticeMapper.insert(notice);
     }

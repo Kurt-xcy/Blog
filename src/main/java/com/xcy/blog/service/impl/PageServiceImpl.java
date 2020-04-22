@@ -48,4 +48,15 @@ public class PageServiceImpl implements PageService {
     public Integer updatePage(Page page) {
         return pageMapper.updateByPrimaryKey(page);
     }
+
+    @Override
+    public Page getPageByKeyAndStatus(Integer status, String key) {
+        PageExample example = new PageExample();
+        example.createCriteria().andPageStatusEqualTo(status).andPageKeyEqualTo(key);
+        List<Page> pageList = pageMapper.selectByExample(example);
+        if (pageList.size()>0){
+            return pageList.get(0);
+        }
+        return null;
+    }
 }

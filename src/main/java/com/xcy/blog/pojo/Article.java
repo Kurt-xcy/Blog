@@ -31,6 +31,16 @@ public class Article implements Serializable {
 
     private List<Tag> tagList;
 
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public String getArticleSummary() {
         return articleSummary;
     }

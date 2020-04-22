@@ -76,4 +76,11 @@ public class CommentServiceImpl implements CommentService {
     public Integer updateComment(Comment comment) {
         return commentMapper.updateByPrimaryKey(comment);
     }
+
+    @Override
+    public List<Comment> listCommentByArticleId(Integer articleId) {
+        CommentExample example = new CommentExample();
+        example.createCriteria().andCommentArticleIdEqualTo(articleId);
+        return commentMapper.selectByExample(example);
+    }
 }

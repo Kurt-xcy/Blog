@@ -44,4 +44,10 @@ public interface CategoryService {
      * @return
      */
     public Integer updateCategory(Category category);
+
+    /**
+     * 查询所有目录数量
+     * @return
+     */
+    public Integer countCategory();
 }

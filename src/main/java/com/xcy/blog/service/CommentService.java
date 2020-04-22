@@ -55,4 +55,11 @@ public interface CommentService {
      * @return
      */
     public Integer updateComment(Comment comment);
+
+    /**
+     * 根据文章id查询评论
+     * @param articleId
+     * @return
+     */
+    public List<Comment> listCommentByArticleId(Integer articleId);
 }
