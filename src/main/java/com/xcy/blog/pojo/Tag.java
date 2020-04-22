@@ -11,6 +11,18 @@ public class Tag implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    public Integer getArticleCount() {
+        return articleCount;
+    }
+
+    public void setArticleCount(Integer articleCount) {
+        this.articleCount = articleCount;
+    }
+
+    /**
+     * 文章数量(不是数据库字段)
+     */
+    private Integer articleCount;
 
     public Integer getTagId() {
         return tagId;

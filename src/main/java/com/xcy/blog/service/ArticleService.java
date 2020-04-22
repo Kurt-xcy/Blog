@@ -38,4 +38,25 @@ public interface ArticleService {
      * @return
      */
     public Article selectByCreateTime(Date date);
+
+    /**
+     * 根据状态和id查询文章
+     * @param id
+     * @return
+     */
+    public Article getArticleByStatusAndId(Integer status,Integer id);
+
+    /**
+     * 更新文章评论+1
+     * @param id
+     * @return
+     */
+    public Integer updateCommentCount(Integer id);
+
+    /**
+     * 更新文章
+     * @param article
+     * @return
+     */
+    public Integer updateArticle(Article article);
 }

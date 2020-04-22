@@ -1,6 +1,7 @@
 package com.xcy.blog.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.xcy.blog.VO.CommentVO;
 import com.xcy.blog.mapper.ArticleMapper;
 import com.xcy.blog.mapper.CommentMapper;
@@ -34,5 +35,45 @@ public class CommentServiceImpl implements CommentService {
             listvo.add(cvo);
         }
         return listvo;
+    }
+
+    @Override
+    public PageInfo<Comment> listCommentByPage(Integer pageIndex, Integer pageSize) {
+        CommentExample example = new CommentExample();
+        example.setOrderByClause("comment_create_time desc");
+        PageHelper.startPage(pageIndex,pageSize);
+        List<Comment> commentList= commentMapper.selectByExample(example);
+        for (Comment comment:commentList){
+            Article article = articleMapper.selectByPrimaryKey(comment.getCommentArticleId());
+            comment.setArticle(article);
+        }
+        return new PageInfo<>(commentList);
+    }
+
+    @Override
+    public Integer insertComment(Comment comment) {
+        return commentMapper.insert(comment);
+    }
+
+    @Override
+    public Comment getCommentById(Integer id) {
+        return commentMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public Integer deleteComment(Integer id) {
+        return commentMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public List<Comment> listChildComment(Integer id) {
+        CommentExample example = new CommentExample();
+        example.createCriteria().andCommentPidEqualTo(id);
+        return commentMapper.selectByExample(example);
+    }
+
+    @Override
+    public Integer updateComment(Comment comment) {
+        return commentMapper.updateByPrimaryKey(comment);
     }
 }

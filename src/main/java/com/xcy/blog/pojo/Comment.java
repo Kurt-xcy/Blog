@@ -28,11 +28,25 @@ public class Comment implements Serializable {
 
     private Date commentCreateTime;
 
-    private Integer commentRole;
+    public Article getArticle() {
+        return article;
+    }
+
+    public void setArticle(Article article) {
+        this.article = article;
+    }
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * 角色(管理员1，访客0)
+     */
+    private Integer commentRole;
 
+    /**
+     * 非数据库字段
+     */
+    private Article article;
 
     public Integer getCommentId() {
         return commentId;

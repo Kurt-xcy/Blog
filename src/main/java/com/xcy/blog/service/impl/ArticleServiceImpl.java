@@ -103,5 +103,31 @@ public class ArticleServiceImpl implements ArticleService {
         return null;
     }
 
+    @Override
+    public Article getArticleByStatusAndId(Integer status, Integer id) {
+        ArticleExample example = new ArticleExample();
+        example.createCriteria().andArticleIdEqualTo(id);
+        if (status!=null){
+            example.createCriteria().andArticleStatusEqualTo(status);
+        }
+        List<Article> articleList = articleMapper.selectByExample(example);
+        if (articleList.size()>0){
+            return articleList.get(0);
+        }
+        return null;
+    }
+
+    @Override
+    public Integer updateCommentCount(Integer id) {
+        Article article = getArticleByStatusAndId(null,id);
+        article.setArticleCommentCount(article.getArticleCommentCount()+1);
+        return articleMapper.updateByPrimaryKey(article);
+    }
+
+    @Override
+    public Integer updateArticle(Article article) {
+        return articleMapper.updateByPrimaryKey(article);
+    }
+
 
 }
