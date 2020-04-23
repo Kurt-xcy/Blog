@@ -93,6 +93,7 @@ public class BackArticleController {
         article.setArticleCreateTime(date);
         article.setArticleUpdateTime(date);
         article.setArticleOrder(1);
+        article.setArticleIsComment(1);
         //填充分类
         List<Category> categoryList = new ArrayList<>();
         if (articleParam.getArticleChildCategoryId() != null) {

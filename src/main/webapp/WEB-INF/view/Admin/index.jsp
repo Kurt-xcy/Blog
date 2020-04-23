@@ -232,7 +232,7 @@
                             <ul>
                                 <c:forEach items="${articleList}" begin="0" end="4" step="1" var="a">
                                     <li><span><fmt:formatDate value="${a.articleCreateTime}"
-                                                              pattern="HH:mm MM月dd日"/> </span>
+                                                              pattern="yyyy年MM月dd日"/> </span>
                                         <a href="/article/${a.articleId}"
                                            target="_blank">${a.articleTitle}</a>
                                     </li>

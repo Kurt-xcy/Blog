@@ -9,7 +9,8 @@
 <head>
     <meta charset="utf-8">
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-    <link rel="shortcut icon" href="/img/logo.png">
+    <link rel="shortcut icon" href="/img/logo.ico">
+    <link rel=”shortcut” href="/img/logo.ico" />
     <title>
         ${options.optionSiteTitle}后台
             <rapid:block name="title"></rapid:block>
@@ -52,7 +53,7 @@
                 </dl>
             </li>
             <li class="layui-nav-item">
-                <a href="/admin/logout">退了</a>
+                <a href="/admin/logout">退出后台</a>
             </li>
         </ul>
     </div>
@@ -129,7 +130,7 @@
 
     <div class="layui-footer">
         <!-- 底部固定区域 -->
-        © <a href="http://blog.liuyanzhao.com">言曌博客</a> 2017  欢迎加入开发者交流群 590480292，博主免费回答大家日常问题。同时博主代做毕设，解决开发问题，详情参看 <a href="https://liuyanzhao.com/bulletin/my-service/" target="_blank">有偿服务</a>
+        © <a href="/admin">Kurt's Blog</a> <font size="3"> 欢迎您访问博客后台管理系统</font>
     </div>
 </div>
 

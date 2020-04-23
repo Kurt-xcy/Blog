@@ -44,7 +44,13 @@ public class ArticleServiceImpl implements ArticleService {
             criteria.andArticleStatusEqualTo(status);
         }
         List<Article> articleList = articleMapper.selectByExample(example);
+        List<ArticleWithBLOBs> articleWithBLOBsList = articleMapper.selectByExampleWithBLOBs(example);
+        for (int i = 0 ; i<articleList.size();i++){
+            articleList.get(i).setArticleContent(articleWithBLOBsList.get(i).getArticleContent());
+            articleList.get(i).setArticleSummary(articleWithBLOBsList.get(i).getArticleSummary());
+        }
         for (Article article:articleList){
+
             ArticleCategoryRefExample articleCategoryRefExample = new ArticleCategoryRefExample();
             articleCategoryRefExample.createCriteria().andArticleIdEqualTo(article.getArticleId());
             List<ArticleCategoryRef> articleCategoryRef = articleCategoryRefMapper.selectByExample(articleCategoryRefExample);
@@ -69,7 +75,8 @@ public class ArticleServiceImpl implements ArticleService {
         articleWithBLOBs.setArticleUpdateTime(article.getArticleUpdateTime());
         articleWithBLOBs.setArticleOrder(article.getArticleOrder());
         articleWithBLOBs.setArticleStatus(article.getArticleStatus());
-        Integer index = articleMapper.insert(articleWithBLOBs);
+        articleWithBLOBs.setArticleIsComment(article.getArticleIsComment());
+        Integer index = articleMapper.insertSelective(articleWithBLOBs);
 
         List<Category> categoryList = article.getCategoryList();
         List<Tag> tagList = article.getTagList();
@@ -103,13 +110,13 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public Article getArticleByStatusAndId(Integer status, Integer id) {
+    public ArticleWithBLOBs getArticleByStatusAndId(Integer status, Integer id) {
         ArticleExample example = new ArticleExample();
         example.createCriteria().andArticleIdEqualTo(id);
         if (status!=null){
             example.createCriteria().andArticleStatusEqualTo(status);
         }
-        List<Article> articleList = articleMapper.selectByExample(example);
+        List<ArticleWithBLOBs> articleList = articleMapper.selectByExampleWithBLOBs(example);
         if (articleList.size()>0){
             return articleList.get(0);
         }
@@ -142,7 +149,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public List<Article> listArticleByCommentCount(Integer limit) {
         ArticleExample example = new ArticleExample();
-        example.setOrderByClause("article_comment_count");
+        example.setOrderByClause("article_comment_count desc");
         example.createCriteria().andArticleStatusEqualTo(1);
         List<Article> articleList = articleMapper.selectByExample(example);
         List<Article> list = articleList.subList(0,8);

@@ -3,6 +3,7 @@ package com.xcy.blog.service;
 import com.github.pagehelper.PageInfo;
 import com.xcy.blog.VO.UserVO;
 import com.xcy.blog.pojo.Article;
+import com.xcy.blog.pojo.ArticleWithBLOBs;
 import com.xcy.blog.pojo.Category;
 
 import java.util.Date;
@@ -41,11 +42,11 @@ public interface ArticleService {
     public Article selectByCreateTime(Date date);
 
     /**
-     * 根据状态和id查询文章
+     * 根据状态和id查询文章(大文本)
      * @param id
      * @return
      */
-    public Article getArticleByStatusAndId(Integer status,Integer id);
+    public ArticleWithBLOBs getArticleByStatusAndId(Integer status, Integer id);
 
     /**
      * 更新文章评论+1

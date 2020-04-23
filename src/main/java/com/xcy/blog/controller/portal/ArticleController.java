@@ -4,10 +4,7 @@ package com.xcy.blog.controller.portal;
 import com.alibaba.fastjson.JSON;
 
 import com.xcy.blog.entity.ArticleStatus;
-import com.xcy.blog.pojo.Article;
-import com.xcy.blog.pojo.Comment;
-import com.xcy.blog.pojo.Tag;
-import com.xcy.blog.pojo.User;
+import com.xcy.blog.pojo.*;
 import com.xcy.blog.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -48,7 +45,7 @@ public class ArticleController {
     public String getArticleDetailPage(@PathVariable("articleId") Integer articleId, Model model) {
 
         //文章信息，分类，标签，作者，评论
-        Article article = articleServiceImpl.getArticleByStatusAndId(ArticleStatus.PUBLISH.getValue(), articleId);
+        ArticleWithBLOBs article = articleServiceImpl.getArticleByStatusAndId(ArticleStatus.PUBLISH.getValue(), articleId);
         if (article == null) {
             return "Home/Error/404";
         }
