@@ -16,9 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
 
-/**
- * @author liuyanzhao
- */
+
 @Slf4j
 @RestController
 @RequestMapping("/admin/upload")
@@ -28,7 +26,7 @@ public class UploadFileController {
      * 文件保存目录，物理路径
      */
 
-    public final String rootPath = "D:/IT/uploads";
+    public final String rootPath = "/usr/local/blogfile/uploads";
 
     public final String allowSuffix = ".bmp.jpg.jpeg.png.gif.pdf.doc.zip.rar.gz";
 

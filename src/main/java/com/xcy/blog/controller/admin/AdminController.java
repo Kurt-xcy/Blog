@@ -69,7 +69,6 @@ public class AdminController {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String rememberme = request.getParameter("rememberme");
-        System.out.println(rememberme);
         User user = userServiceImpl.getUserByName(username);
         Result result = new Result();
         if(user!=null){

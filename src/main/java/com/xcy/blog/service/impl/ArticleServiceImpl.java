@@ -80,17 +80,22 @@ public class ArticleServiceImpl implements ArticleService {
 
         List<Category> categoryList = article.getCategoryList();
         List<Tag> tagList = article.getTagList();
-        article = selectByCreateTime(article.getArticleCreateTime());
+        ArticleExample example = new ArticleExample();
+        example.setOrderByClause("article_create_time desc");
+        example.createCriteria().andArticleTitleEqualTo(articleWithBLOBs.getArticleTitle());
+        List<Article> getArticle = articleMapper.selectByExample(example);
+        System.out.println("article.getArticleId()"+getArticle.get(0).getArticleId());
         for (Category category:categoryList){
             ArticleCategoryRef articleCategoryRef = new ArticleCategoryRef();
-            articleCategoryRef.setArticleId(article.getArticleId());
+            System.out.println("article.getArticleId()"+getArticle.get(0).getArticleId());
+            articleCategoryRef.setArticleId(getArticle.get(0).getArticleId());
             articleCategoryRef.setCategoryId(category.getCategoryId());
             articleCategoryRefMapper.insertSelective(articleCategoryRef);
         }
 
         for(Tag tag:tagList){
             ArticleTagRefKey articleTagRefKey = new ArticleTagRefKey();
-            articleTagRefKey.setArticleId(article.getArticleId());
+            articleTagRefKey.setArticleId(getArticle.get(0).getArticleId());
             articleTagRefKey.setTagId(tag.getTagId());
             articleTagRefMapper.insertSelective(articleTagRefKey);
         }
@@ -300,6 +305,11 @@ public class ArticleServiceImpl implements ArticleService {
             articleList.add(article);
         }
         return new PageInfo<>(articleList);
+    }
+
+    @Override
+    public Integer countArticle() {
+        return articleMapper.countByExample(new ArticleExample());
     }
 
 

@@ -169,4 +169,12 @@ public interface ArticleService {
      * @return
      */
     public PageInfo<Article> pageArticleBytagId(Integer pageIndex,Integer pageSize,Integer status,Integer tagId);
+
+    /**
+     * 获取当前文章总数
+     * @return
+     */
+    public Integer countArticle();
+
+
 }

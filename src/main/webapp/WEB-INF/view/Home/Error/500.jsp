@@ -47,7 +47,7 @@
                         <div id="btn">
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <a class="button" href="/">返回首页</a>
-                            <a class="button" href="http://wpa.qq.com/msgrd?v=3&uin=847064370&site=qq&menu=yes">联系站长</a>
+                            <a class="button" href="http://wpa.qq.com/msgrd?v=3&uin=786886838&site=qq&menu=yes">联系站长</a>
                             <div class="clear"></div>
                         </div>
                         </center>
