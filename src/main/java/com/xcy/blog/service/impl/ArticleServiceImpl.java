@@ -147,8 +147,13 @@ public class ArticleServiceImpl implements ArticleService {
         example.setOrderByClause("RAND()");
         example.createCriteria().andArticleStatusEqualTo(1);
         articleList = articleMapper.selectByExample(example);
-        List<Article> list = articleList.subList(0,limit);
-        return list;
+        if (articleList.size()>limit){
+            List<Article> list = articleList.subList(0,limit);
+            return list;
+        }else {
+            return articleList;
+        }
+
     }
 
     @Override
@@ -157,8 +162,12 @@ public class ArticleServiceImpl implements ArticleService {
         example.setOrderByClause("article_comment_count desc");
         example.createCriteria().andArticleStatusEqualTo(1);
         List<Article> articleList = articleMapper.selectByExample(example);
-        List<Article> list = articleList.subList(0,8);
-        return list;
+        if (articleList.size()>limit){
+            List<Article> list = articleList.subList(0,limit);
+            return list;
+        }
+        return null;
+
     }
 
     @Override
@@ -264,7 +273,10 @@ public class ArticleServiceImpl implements ArticleService {
         ArticleExample example = new ArticleExample();
         example.setOrderByClause("article_update_time desc");
         List<Article> articleList = articleMapper.selectByExample(example);
-        return articleList.get(0);
+        if (articleList.size()>0){
+            return articleList.get(0);
+        }
+        return null;
     }
 
     @Override
@@ -310,6 +322,52 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public Integer countArticle() {
         return articleMapper.countByExample(new ArticleExample());
+    }
+
+    @Override
+    public Integer deleteArticle(Integer id) {
+        return articleMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public Integer updateArticleDetail(Article article) {
+        ArticleWithBLOBs articleWithBLOBs = new ArticleWithBLOBs();
+        articleWithBLOBs.setArticleId(article.getArticleId());
+        articleWithBLOBs.setArticleUserId(article.getArticleUserId());
+        articleWithBLOBs.setArticleTitle(article.getArticleTitle());
+        articleWithBLOBs.setArticleContent(article.getArticleContent());
+        articleWithBLOBs.setArticleSummary(article.getArticleSummary());
+        articleWithBLOBs.setArticleCreateTime(article.getArticleCreateTime());
+        articleWithBLOBs.setArticleUpdateTime(article.getArticleUpdateTime());
+        articleWithBLOBs.setArticleOrder(article.getArticleOrder());
+        articleWithBLOBs.setArticleStatus(article.getArticleStatus());
+        articleWithBLOBs.setArticleIsComment(article.getArticleIsComment());
+        Integer index = articleMapper.updateByPrimaryKeySelective(articleWithBLOBs);
+
+        List<Category> categoryList = article.getCategoryList();
+        List<Tag> tagList = article.getTagList();
+
+        ArticleCategoryRefExample articleCategoryRefExample = new ArticleCategoryRefExample();
+        articleCategoryRefExample.createCriteria().andArticleIdEqualTo(article.getArticleId());
+        articleCategoryRefMapper.deleteByExample(articleCategoryRefExample);
+        for (Category category:categoryList){
+            ArticleCategoryRef articleCategoryRef = new ArticleCategoryRef();
+            articleCategoryRef.setArticleId(article.getArticleId());
+            articleCategoryRef.setCategoryId(category.getCategoryId());
+            articleCategoryRefMapper.insertSelective(articleCategoryRef);
+        }
+
+        ArticleTagRefExample articleTagRefExample = new ArticleTagRefExample();
+        articleTagRefExample.createCriteria().andArticleIdEqualTo(article.getArticleId());
+        articleTagRefMapper.deleteByExample(articleTagRefExample);
+        for(Tag tag:tagList){
+            ArticleTagRefKey articleTagRefKey = new ArticleTagRefKey();
+            articleTagRefKey.setArticleId(article.getArticleId());
+            articleTagRefKey.setTagId(tag.getTagId());
+            articleTagRefMapper.insertSelective(articleTagRefKey);
+        }
+
+        return index;
     }
 
 

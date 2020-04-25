@@ -176,5 +176,17 @@ public interface ArticleService {
      */
     public Integer countArticle();
 
+    /**
+     * 根据id删除文章
+     * @param id
+     * @return
+     */
+    public Integer deleteArticle(Integer id);
 
+    /**
+     * 更新文章，以及目录和标签
+     * @param article
+     * @return
+     */
+    public Integer updateArticleDetail(Article article);
 }
