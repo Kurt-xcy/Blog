@@ -120,6 +120,11 @@
     <script>
 
 
+        layui.code({
+            elem: 'pre', //默认值为.layui-code
+            title: 'JavaScript'
+        });
+
         layui.use(['form', 'layedit', 'laydate'], function () {
             var form = layui.form
                 , layer = layui.layer
