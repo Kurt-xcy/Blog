@@ -20,10 +20,13 @@ admin后台系统的cookie保存用户密码有点不安全，改成session存�
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200426104436606.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDAwMTY4MQ==,size_16,color_FFFFFF,t_70)
 3）uploadfile<br/>
 3.1）对于在IDEA下的tomcat部署需要添加一下文件关联，选择你要关联的文件夹<br/>
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200426105330182.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDAwMTY4MQ==,size_16,color_FFFFFF,t_70)
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200426111717280.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDAwMTY4MQ==,size_16,color_FFFFFF,t_70)
 3.2）如果在linux下部署，修改tomcat配置文件设置静态资源映射<br/>
 在 tomcat/conf/server.xml  Host 标签内添加如下代码<br/>
-<Context path="/uploads" docBase="/usr/local/blogfile/uploads" debug="0" reloadable="true" /><br/>
+```
+<Context path="/uploads" docBase="/usr/local/blogfile/uploads" debug="0" reloadable="true" />
+```
+
 4)配置的mysql数据库5.X版本，修改路径在\Blog\src\main\resources\db.properties里，
 # sql文件之后会上传
 
