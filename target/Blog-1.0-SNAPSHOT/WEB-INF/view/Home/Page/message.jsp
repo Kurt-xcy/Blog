@@ -43,12 +43,12 @@
                 <div class="entry-content">
                     <div class="single-content">
                         <!--PC版-->
-                        <div id="SOHUCS" sid="message"></div>
-                        <script charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/changyan.js" ></script>
+                        <div id="SOHUCS" ></div>
+                        <script charset="utf-8" type="text/javascript" src="https://cy-cdn.kuaizhan.com/upload/changyan.js" ></script>
                         <script type="text/javascript">
                             window.changyan.api.config({
-                                appid: 'cytcdBHan',
-                                conf: 'prod_acc9eafcae7c468c116f87dfb853e677'
+                                appid: 'cyuOlDN8p',
+                                conf: 'prod_7c3c99d8a94f51b9428cfcb566950606'
                             });
                         </script>
                     </div>
