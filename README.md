@@ -29,6 +29,24 @@ admin后台系统的cookie保存用户密码有点不安全，改成session存�
 
 4)配置的mysql数据库5.X版本，修改路径在\Blog\src\main\resources\db.properties里，
 # sql文件之后会上传
-
-
-
+# 业务介绍
+## 资源加载（拦截器）
+设置了一个mvc拦截器HomeResourceInterceptor，拦截路径为“ /** ”，用于加载菜单，以及网站概况，最新文章等等，加入request中，用于显示。
+```
+<mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="com.xcy.blog.interceptor.HomeResourceInterceptor"/>
+        </mvc:interceptor>
+</mvc:interceptors>
+```
+## 后台登陆（拦截器）
+设置了一个mvc拦截器SecurityInterceptor，拦截路径为“ /admin/** ”，查找请求中是否包含user,没有的话重定向到"/login"，有的话放行。
+```
+<mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/admin/**"/>
+            <bean class="com.xcy.blog.interceptor.SecurityInterceptor"/>
+        </mvc:interceptor>
+</mvc:interceptors>
+```
