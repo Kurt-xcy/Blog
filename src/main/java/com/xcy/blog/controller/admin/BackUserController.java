@@ -6,6 +6,9 @@ import com.xcy.blog.VO.UserVO;
 import com.xcy.blog.pojo.Article;
 import com.xcy.blog.pojo.User;
 import com.xcy.blog.service.UserService;
+import org.apache.shiro.authz.UnauthorizedException;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,6 +36,7 @@ public class BackUserController {
         ModelAndView modelandview = new ModelAndView();
 
         List<UserVO> userListVO = userServiceImpl.listUserVO();
+
         modelandview.addObject("userList",userListVO);
         modelandview.setViewName("Admin/User/index");
         return modelandview;
@@ -57,11 +61,15 @@ public class BackUserController {
      * @return
      */
     @RequestMapping(value = "/edit/{id}")
-    public ModelAndView editUserView(@PathVariable("id") Integer id)  {
+    public ModelAndView editUserView(@PathVariable("id") Integer id,HttpServletRequest request)  {
         ModelAndView modelAndView = new ModelAndView();
 
-        User user =  userServiceImpl.getUserById(id);
-        modelAndView.addObject("user",user);
+        User userSession = (User)request.getSession().getAttribute("user");
+        if (userSession.getUserId()!=id){
+            throw new UnauthorizedException();
+        }
+        //User user =  userServiceImpl.getUserById(id);
+        modelAndView.addObject("user",userSession);
 
         modelAndView.setViewName("Admin/User/edit");
         return modelAndView;
@@ -127,6 +135,7 @@ public class BackUserController {
      * @return
      */
     @RequestMapping(value = "/delete/{id}")
+    @RequiresRoles(value = {"admin"})
     public String deleteUser(@PathVariable("id") Integer id)  {
         userServiceImpl.deleteUser(id);
         return "redirect:/admin/user";
@@ -148,7 +157,9 @@ public class BackUserController {
      * @param user
      * @return
      */
+
     @RequestMapping(value = "/insertSubmit",method = RequestMethod.POST)
+    @RequiresRoles("admin")
     public String insertUserSubmit(User user)  {
         User user2 = userServiceImpl.getUserByName(user.getUserName());
         User user3 = userServiceImpl.getUserByEmail(user.getUserEmail());

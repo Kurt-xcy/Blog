@@ -65,6 +65,36 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    public PageInfo<Article> pageArticleByUserId(Integer pageIndex, Integer pageSize, Integer status, int userId) {
+        ArticleExample example = new ArticleExample();
+        PageHelper.startPage(pageIndex,pageSize);
+        ArticleExample.Criteria criteria = example.createCriteria();
+        if (status!=null){
+            criteria.andArticleStatusEqualTo(status);
+        }
+        criteria.andArticleUserIdEqualTo(userId);
+        List<Article> articleList = articleMapper.selectByExample(example);
+        List<ArticleWithBLOBs> articleWithBLOBsList = articleMapper.selectByExampleWithBLOBs(example);
+        for (int i = 0 ; i<articleList.size();i++){
+            articleList.get(i).setArticleContent(articleWithBLOBsList.get(i).getArticleContent());
+            articleList.get(i).setArticleSummary(articleWithBLOBsList.get(i).getArticleSummary());
+        }
+        for (Article article:articleList){
+
+            ArticleCategoryRefExample articleCategoryRefExample = new ArticleCategoryRefExample();
+            articleCategoryRefExample.createCriteria().andArticleIdEqualTo(article.getArticleId());
+            List<ArticleCategoryRef> articleCategoryRef = articleCategoryRefMapper.selectByExample(articleCategoryRefExample);
+            List<Category> categoryList = new ArrayList<>();
+            for(ArticleCategoryRef ref : articleCategoryRef){
+                categoryList.add(categoryMapper.selectByPrimaryKey(ref.getCategoryId()));
+            }
+            article.setCategoryList(categoryList);
+        }
+        PageInfo<Article> pageInfo = new PageInfo<>(articleList);
+        return pageInfo;
+    }
+
+    @Override
     public Integer insertArticle(Article article) {
         ArticleWithBLOBs articleWithBLOBs = new ArticleWithBLOBs();
         articleWithBLOBs.setArticleUserId(article.getArticleUserId());
@@ -203,9 +233,12 @@ public class ArticleServiceImpl implements ArticleService {
         List<Article> articleList = new ArrayList<>();
         for (ArticleCategoryRef articleCategoryRef:articleCategoryRefList){
             Article article = articleMapper.selectByPrimaryKey(articleCategoryRef.getArticleId());
-            if (status==article.getArticleStatus()){
-                articleList.add(article);
+            if (article!=null){
+                if (status==article.getArticleStatus()){
+                    articleList.add(article);
+                }
             }
+
         }
         return new PageInfo<>(articleList);
     }
@@ -287,8 +320,9 @@ public class ArticleServiceImpl implements ArticleService {
         List<Article> list = new ArrayList<>();
         if (articleList.size()>5){
             list = articleList.subList(0,5);
+            return list;
         }
-        return list;
+        return articleList;
     }
 
     @Override

@@ -28,9 +28,23 @@ public class UserVO extends User {
     private Integer userStatus;
 
     /**
+     * 角色（不是数据库字段）
+     */
+    private String role;
+
+    /**
      * 文章数量（不是数据库字段）
      */
     private Integer articleCount;
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
 
     public UserVO(User user) {
         super();

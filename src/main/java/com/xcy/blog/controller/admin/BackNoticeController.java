@@ -5,6 +5,7 @@ package com.xcy.blog.controller.admin;
 import com.xcy.blog.entity.NoticeStatus;
 import com.xcy.blog.pojo.Notice;
 import com.xcy.blog.service.NoticeService;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -53,6 +54,7 @@ public class BackNoticeController {
      * @return
      */
     @RequestMapping(value = "/insertSubmit", method = RequestMethod.POST)
+    @RequiresRoles("admin")
     public String insertNoticeSubmit(Notice notice) {
         notice.setNoticeCreateTime(new Date());
         notice.setNoticeUpdateTime(new Date());
@@ -69,6 +71,7 @@ public class BackNoticeController {
      * @return
      */
     @RequestMapping(value = "/delete/{id}")
+    @RequiresRoles("admin")
     public String deleteNotice(@PathVariable("id") Integer id) {
         noticeServiceImpl.deleteNotice(id);
 

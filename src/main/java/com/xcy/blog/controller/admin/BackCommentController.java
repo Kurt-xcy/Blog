@@ -9,6 +9,7 @@ import com.xcy.blog.pojo.Comment;
 import com.xcy.blog.service.ArticleService;
 import com.xcy.blog.service.CommentService;
 import com.xcy.blog.util.MyUtils;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -56,6 +57,7 @@ public class BackCommentController {
      */
     @RequestMapping(value = "/insert", method = {RequestMethod.POST})
     @ResponseBody
+    @RequiresRoles("admin")
     public void insertComment(HttpServletRequest request, Comment comment) {
         //添加评论
         comment.setCommentIp(MyUtils.getIpAddr(request));
@@ -72,6 +74,7 @@ public class BackCommentController {
      * @param id 批量ID
      */
     @RequestMapping(value = "/delete/{id}")
+    @RequiresRoles("admin")
     public void deleteComment(@PathVariable("id") Integer id) {
         Comment comment = commentServiceImpl.getCommentById(id);
         //删除评论
@@ -107,6 +110,7 @@ public class BackCommentController {
      * @return
      */
     @RequestMapping(value = "/editSubmit", method = RequestMethod.POST)
+    @RequiresRoles("admin")
     public String editCommentSubmit(Comment comment) {
         commentServiceImpl.updateComment(comment);
         return "redirect:/admin/comment";
@@ -134,6 +138,7 @@ public class BackCommentController {
      * @return
      */
     @RequestMapping(value = "/replySubmit", method = RequestMethod.POST)
+    @RequiresRoles("admin")
     public String replyCommentSubmit(HttpServletRequest request, Comment comment) {
         //文章评论数+1
         Article article = articleServiceImpl.getArticleByStatusAndId(ArticleStatus.PUBLISH.getValue(), comment.getCommentArticleId());

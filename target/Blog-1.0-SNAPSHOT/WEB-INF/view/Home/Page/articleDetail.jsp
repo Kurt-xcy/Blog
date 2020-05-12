@@ -4,6 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="rapid" uri="http://www.rapid-framework.org.cn/rapid" %>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 
 <rapid:override name="title">
     <title>${article.articleTitle}</title>
@@ -107,12 +108,20 @@
 
                     <footer class="single-footer">
                         <ul class="single-meta">
-                            <c:if test="${sessionScope.user!=null}">
+                            <shiro:hasRole name="admin">
                                 <li class="edit-link">
-                                    <a target="_blank" class="post-edit-link"
+                                    <a target="_self" class="post-edit-link"
                                        href="/admin/article/edit/${article.articleId}">编辑</a>
                                 </li>
-                            </c:if>
+                            </shiro:hasRole>
+                            <shiro:hasRole name="passenger">
+                                <c:if test="${sessionScope.user.userId==article.articleUserId}">
+                                    <li class="edit-link">
+                                        <a target="_self" class="post-edit-link"
+                                           href="/admin/article/edit/${article.articleId}">编辑</a>
+                                    </li>
+                                </c:if>
+                            </shiro:hasRole>
                             <li class="comment">
                                 <a href="/article/${article.articleId}#comments"
                                    rel="external nofollow">

@@ -4,6 +4,7 @@ package com.xcy.blog.controller.admin;
 
 import com.xcy.blog.pojo.Link;
 import com.xcy.blog.service.LinkService;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -63,6 +64,7 @@ public class BackLinkController {
      * @return 响应
      */
     @RequestMapping(value = "/insertSubmit",method = RequestMethod.POST)
+    @RequiresRoles("admin")
     public String insertLinkSubmit(Link link)  {
         link.setLinkCreateTime(new Date());
         link.setLinkUpdateTime(new Date());
@@ -78,6 +80,7 @@ public class BackLinkController {
      * @return 响应
      */
     @RequestMapping(value = "/delete/{id}")
+    @RequiresRoles("admin")
     public String deleteLink(@PathVariable("id") Integer id)  {
 
         linkServiceImpl.deleteLink(id);
@@ -112,6 +115,7 @@ public class BackLinkController {
      * @return 响应
      */
     @RequestMapping(value = "/editSubmit",method = RequestMethod.POST)
+    @RequiresRoles("admin")
     public String editLinkSubmit(Link link)  {
         link.setLinkUpdateTime(new Date());
         linkServiceImpl.updateLink(link);

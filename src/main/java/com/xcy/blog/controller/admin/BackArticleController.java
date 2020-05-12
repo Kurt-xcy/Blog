@@ -3,6 +3,7 @@ package com.xcy.blog.controller.admin;
 import cn.hutool.http.HtmlUtil;
 import com.github.pagehelper.PageInfo;
 import com.xcy.blog.VO.ArticleParam;
+import com.xcy.blog.VO.Result;
 import com.xcy.blog.pojo.Article;
 import com.xcy.blog.pojo.Category;
 import com.xcy.blog.pojo.Tag;
@@ -10,15 +11,16 @@ import com.xcy.blog.pojo.User;
 import com.xcy.blog.service.ArticleService;
 import com.xcy.blog.service.CategoryService;
 import com.xcy.blog.service.TagService;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,16 +38,24 @@ public class BackArticleController {
     private TagService tagServiceImpl;
     @RequestMapping("")
     public String showPage(@RequestParam(required = false,defaultValue = "1") Integer pageIndex,
-                                 @RequestParam(required = false,defaultValue = "10") Integer pageSize,
-                                 @RequestParam(required = false) Integer status,
-                                 Model model){
+                           @RequestParam(required = false,defaultValue = "10") Integer pageSize,
+                           @RequestParam(required = false) Integer status,
+                           Model model, HttpServletRequest request){
         if (status == null) {
             model.addAttribute("pageUrlPrefix", "/admin/article?pageIndex");
 
         } else {
             model.addAttribute("pageUrlPrefix", "/admin/article?status=" + status + "&pageIndex");
         }
-        PageInfo<Article> articlePageInfo = articleServiceImpl.pageArticle(pageIndex, pageSize, status);
+        PageInfo<Article> articlePageInfo = new PageInfo<Article>();
+        Subject subject = SecurityUtils.getSubject();
+        if (subject.hasRole("admin")){
+            articlePageInfo = articleServiceImpl.pageArticle(pageIndex, pageSize, status);
+        }else if (subject.hasRole("passenger")){
+            User user = (User)request.getSession().getAttribute("user");
+            articlePageInfo = articleServiceImpl.pageArticleByUserId(pageIndex, pageSize, status,user.getUserId());
+        }
+
         model.addAttribute("pageInfo", articlePageInfo);
         return "Admin/Article/index";
     }
@@ -131,8 +141,10 @@ public class BackArticleController {
      * @param id 文章ID
      */
     @RequestMapping(value = "/delete/{id}")
-    public void deleteArticle(@PathVariable("id") Integer id) {
-        articleServiceImpl.deleteArticle(id);
+    @RequiresRoles("admin")
+    public String deleteArticle(@PathVariable("id") Integer id) {
+        int index = articleServiceImpl.deleteArticle(id);
+        return "forward:/admin/article";
     }
 
 

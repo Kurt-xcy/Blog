@@ -4,6 +4,7 @@ package com.xcy.blog.controller.admin;
 import com.xcy.blog.entity.PageStatus;
 import com.xcy.blog.pojo.Page;
 import com.xcy.blog.service.PageService;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -58,6 +59,7 @@ public class BackPageController {
      * @return
      */
     @RequestMapping(value = "/insertSubmit", method = RequestMethod.POST)
+    @RequiresRoles("admin")
     public String insertPageSubmit(Page page) {
 
         //判断别名是否存在
@@ -78,6 +80,7 @@ public class BackPageController {
      * @return
      */
     @RequestMapping(value = "/delete/{id}")
+    @RequiresRoles("admin")
     public String deletePage(@PathVariable("id") Integer id) {
         //调用service批量删除
         pageServiceImpl.deletePage(id);
@@ -110,6 +113,7 @@ public class BackPageController {
      * @return
      */
     @RequestMapping(value = "/editSubmit", method = RequestMethod.POST)
+    @RequiresRoles("admin")
     public String editPageSubmit(Page page) {
         Page checkPage = pageServiceImpl.getPageByKey(page.getPageKey());
         //判断别名是否存在且不是这篇文章

@@ -6,6 +6,7 @@ import com.xcy.blog.pojo.Tag;
 import com.xcy.blog.service.ArticleService;
 import com.xcy.blog.service.ArticleTagRefService;
 import com.xcy.blog.service.TagService;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -65,6 +66,7 @@ public class BackTagController {
      * @return
      */
     @RequestMapping(value = "/delete/{id}")
+    @RequiresRoles("admin")
     public String deleteTag(@PathVariable("id") Integer id)  {
         Integer count = articleTagRefServiceImpl.countArticleByTagId(id);
         if (count == 0) {
@@ -101,6 +103,7 @@ public class BackTagController {
      * @return
      */
     @RequestMapping(value = "/editSubmit",method = RequestMethod.POST)
+    @RequiresRoles("admin")
     public String editTagSubmit(Tag tag)  {
         tagServiceImpl.updateTag(tag);
         return "redirect:/admin/tag";

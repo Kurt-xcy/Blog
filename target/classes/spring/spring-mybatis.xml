@@ -98,4 +98,66 @@
 
     <!--加载upLoadFile.properties-->
     <context:property-placeholder location="classpath*:*.properties"/>
+
+
+
+    <!-- shiro配置 -->
+    <!-- 自定义Realm -->
+    <bean id="myRealm" class="com.xcy.blog.shiro.realm.MyRealm" >
+        <!--配置权限缓存-->
+        <property name="authorizationCachingEnabled" value="false"/>
+    </bean>
+
+    <!-- 安全管理器 -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="myRealm" />
+    </bean>
+
+    <!--
+        4. 配置 LifecycleBeanPostProcessor. 可以自定的来调用配置在 Spring IOC 容器中 shiro bean 的生命周期方法.
+        -->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+    <!-- Enable Shiro Annotations for Spring-configured beans.  Only run after
+         the lifecycleBeanProcessor has run: -->
+    <!--
+    5. 启用 IOC 容器中使用 shiro 的注解. 但必须在配置了 LifecycleBeanPostProcessor 之后才可以使用.
+    -->
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+          depends-on="lifecycleBeanPostProcessor"/>
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+
+    <bean id="roleOrFilter" class="com.xcy.blog.shiro.filter.CustomRolesAuthorizationFilter"/>
+    <!-- Shiro过滤器 -->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <!-- Shiro的核心安全接口,这个属性是必须的 -->
+        <property name="securityManager" ref="securityManager" />
+        <!-- 权限认证失败，则跳转到指定页面 -->
+        <!--<property name="unauthorizedUrl" value="/login" />-->
+        <property name="loginUrl" value="/login"/>
+        <property name="filters">
+            <map>
+                <entry key="roleOrFilter" value-ref="roleOrFilter"/>
+            </map>
+
+        </property>
+        <!-- Shiro连接约束配置,即过滤链的定义 -->
+        <property name="filterChainDefinitions" >
+            <value>
+                <!-- 静态文件 -->
+         <!--       /css/** = anon
+                /js/** = anon
+                /img/** = anon
+                /plugin/** = anon
+                /Admin/login.jsp = anon-->
+              <!--  /login.jsp = anon
+                /login = anon-->
+                /login* = anon
+                /admin/** = authc,roleOrFilter[admin,passenger]
+
+            </value>
+        </property>
+    </bean>
 </beans>

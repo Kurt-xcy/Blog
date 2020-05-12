@@ -59,5 +59,6 @@ public interface UserService {
      * @param user
      * @return
      */
+
     public Integer insertUser(User user);
 }

@@ -158,6 +158,7 @@ function checkUserName() {
     return result;
 }
 
+
 //添加用户检查电子邮箱是否存在
 function checkUserEmail() {
     var result;

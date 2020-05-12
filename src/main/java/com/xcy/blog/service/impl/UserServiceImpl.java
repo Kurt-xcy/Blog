@@ -2,11 +2,13 @@ package com.xcy.blog.service.impl;
 
 import com.xcy.blog.VO.UserVO;
 import com.xcy.blog.mapper.ArticleMapper;
+import com.xcy.blog.mapper.RoleMapper;
 import com.xcy.blog.mapper.UserMapper;
-import com.xcy.blog.pojo.ArticleExample;
-import com.xcy.blog.pojo.User;
-import com.xcy.blog.pojo.UserExample;
+import com.xcy.blog.mapper.UserRoleMapper;
+import com.xcy.blog.pojo.*;
 import com.xcy.blog.service.UserService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,11 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
     @Autowired
     private ArticleMapper articleMapper;
+    @Autowired
+    private UserRoleMapper userRoleMapper;
+    @Autowired
+    private RoleMapper roleMapper;
+
     @Override
     public User getUserByName(String username) {
         UserExample example = new UserExample();
@@ -66,6 +73,13 @@ public class UserServiceImpl implements UserService {
             ArticleExample example = new ArticleExample();
             example.createCriteria().andArticleUserIdEqualTo(user.getUserId());
             userVO.setArticleCount(articleMapper.countByExample(example));
+
+            //根据userid查找role
+            UserRoleExample userRoleExample = new UserRoleExample();
+            userRoleExample.createCriteria().andUserIdEqualTo(userVO.getUserId());
+            List<UserRole> userRoleList = userRoleMapper.selectByExample(userRoleExample);
+            Role role = roleMapper.selectByPrimaryKey(userRoleList.get(0).getRoleId());
+            userVO.setRole(role.getRoleName());
             listuserVO.add(userVO);
         }
         return listuserVO;

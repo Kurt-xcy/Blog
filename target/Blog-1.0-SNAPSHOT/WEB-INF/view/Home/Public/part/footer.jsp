@@ -11,8 +11,11 @@
         <p style="text-align: center;">Copyright © 2020
             <a href="/" target="_blank" rel="noopener noreferrer">${options.optionSiteTitle}</a>
             All rights reserved.
+            <a target="_blank" href="http://www.beian.miit.gov.cn/" >
+                <span class="font-text">  浙ICP备20014576号</span>
+            </a>
             <a target="_blank" href="/map" >
-                <span class="font-text">站点地图</span>
+                <span class="font-text">   站点地图</span>
             </a>
         </p>
     </div>

@@ -3,6 +3,7 @@ package com.xcy.blog.controller.admin;
 
 import com.xcy.blog.pojo.Options;
 import com.xcy.blog.service.OptionsService;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,6 +57,7 @@ public class BackOptionsController {
      * @return
      */
     @RequestMapping(value = "/editSubmit",method = RequestMethod.POST)
+    @RequiresRoles("admin")
     public String editOptionSubmit(Options options)  {
         //如果记录不存在，那就新建
         Options optionsCustom = optionsServiceImpl.getOptions();

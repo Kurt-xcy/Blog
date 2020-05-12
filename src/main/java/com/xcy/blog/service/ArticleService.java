@@ -28,6 +28,16 @@ public interface ArticleService {
     public PageInfo<Article> pageArticle(Integer pageIndex,Integer pageSize,Integer status);
 
     /**
+     * 查询某状态的文章,限定指定用户的文章
+     * @param pageIndex
+     * @param pageSize
+     * @param status
+     * @param userId
+     * @return
+     */
+    public PageInfo<Article> pageArticleByUserId(Integer pageIndex,Integer pageSize,Integer status,int userId);
+
+    /**
      * 新增文章
      * @param article
      * @return

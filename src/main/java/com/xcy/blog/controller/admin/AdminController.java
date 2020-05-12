@@ -8,7 +8,13 @@ import com.xcy.blog.pojo.User;
 import com.xcy.blog.service.ArticleService;
 import com.xcy.blog.service.CommentService;
 import com.xcy.blog.service.UserService;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.crypto.hash.SimpleHash;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,8 +25,10 @@ import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 public class AdminController {
@@ -53,7 +61,7 @@ public class AdminController {
      * @return
      */
     @RequestMapping("/login")
-    public String login(){
+    public String login(HttpServletRequest request){
         return "Admin/login";
     }
 
@@ -65,8 +73,8 @@ public class AdminController {
      */
     @RequestMapping("/loginVerify")
     @ResponseBody
-    public Result loginVerify(HttpServletRequest request,HttpServletResponse response){
-        String username = request.getParameter("username");
+    public Result loginVerify(HttpServletRequest request, HttpServletResponse response){
+      /*  String username = request.getParameter("username");
         String password = request.getParameter("password");
         String rememberme = request.getParameter("rememberme");
         User user = userServiceImpl.getUserByName(username);
@@ -100,7 +108,49 @@ public class AdminController {
         userupd.setUserLastLoginIp(getIpAddr(request));
         userupd.setUserLastLoginTime(new Date());
         userServiceImpl.updUser(userupd);
+        return result;*/
+
+      //使用shiro
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        String rememberme = request.getParameter("rememberme");
+        UsernamePasswordToken token = new UsernamePasswordToken(username,password);
+        Subject subject = SecurityUtils.getSubject();
+        Result result = new Result();
+        try{
+            subject.login(token);
+            result.setCode(1);
+            result.setMsg("登陆成功");
+
+            //记住我，三天免登陆
+            if(rememberme!=null&&rememberme.equals("1")){
+                //添加cookie
+                //创建两个Cookie对象
+                Cookie nameCookie = new Cookie("username", username);
+                //设置Cookie的有效期为3天
+                nameCookie.setMaxAge(60 * 60 * 24 * 3);
+                Cookie pwdCookie = new Cookie("password", password);
+                pwdCookie.setMaxAge(60 * 60 * 24 * 3);
+                response.addCookie(nameCookie);
+                response.addCookie(pwdCookie);
+            }
+
+            //更新最后登陆的ip和时间
+            User userupd = userServiceImpl.getUserByName(username);
+            userupd.setUserLastLoginIp(getIpAddr(request));
+            userupd.setUserLastLoginTime(new Date());
+            userServiceImpl.updUser(userupd);
+            //添加session
+            User user = userServiceImpl.getUserByName(username);
+            user.setUserPass(null);
+            request.getSession().setAttribute("user", user);
+        }catch (AuthenticationException e){
+            e.printStackTrace();
+            result.setCode(0);
+            result.setMsg("用户名或密码错误，请重试");
+        }
         return result;
+
     }
 
     /**
@@ -110,7 +160,9 @@ public class AdminController {
      */
     @RequestMapping("/admin/logout")
     public String logout(HttpServletRequest request){
-        request.getSession().removeAttribute("user");
+        //request.getSession().removeAttribute("user");
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
         return "redirect:/login";
     }
 

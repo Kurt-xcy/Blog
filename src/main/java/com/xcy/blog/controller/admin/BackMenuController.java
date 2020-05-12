@@ -4,6 +4,7 @@ package com.xcy.blog.controller.admin;
 import com.xcy.blog.entity.MenuLevel;
 import com.xcy.blog.pojo.Menu;
 import com.xcy.blog.service.MenuService;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,6 +42,7 @@ public class BackMenuController {
      * @return
      */
     @RequestMapping(value = "/insertSubmit",method = RequestMethod.POST)
+    @RequiresRoles("admin")
     public String insertMenuSubmit(Menu menu)  {
         if(menu.getMenuOrder() == null) {
             menu.setMenuOrder(MenuLevel.TOP_MENU.getValue());
@@ -56,6 +58,7 @@ public class BackMenuController {
      * @return
      */
     @RequestMapping(value = "/delete/{id}")
+    @RequiresRoles("admin")
     public String deleteMenu(@PathVariable("id") Integer id)  {
         menuServiceImpl.deleteMenu(id);
         return "redirect:/admin/menu";
@@ -89,6 +92,7 @@ public class BackMenuController {
      * @return
      */
     @RequestMapping(value = "/editSubmit",method = RequestMethod.POST)
+    @RequiresRoles("admin")
     public String editMenuSubmit(Menu menu)  {
         menuServiceImpl.updateMenu(menu);
         return "redirect:/admin/menu";

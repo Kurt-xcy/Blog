@@ -43,6 +43,7 @@
     <thead>
     <tr>
         <th>用户名</th>
+        <th>权限</th>
         <th>昵称</th>
         <th>电子邮件</th>
         <th>文章</th>
@@ -58,16 +59,19 @@
                  <img src="${u.userAvatar}" width="48" height="48">
                  <strong><a href="/admin/user/edit/${u.userId}">${u.userName}</a></strong>
             </td>
-            <td>
+            <td width="100">
+                    ${u.role}
+            </td>
+            <td width="100">
                 ${u.userNickname}
             </td>
-            <td >
+            <td width="200">
                 ${u.userEmail}
             </td>
-            <td>
+            <td width="48">
                 ${u.articleCount}
             </td>
-            <td>
+            <td width="64">
                 <c:choose>
                     <c:when test="${u.userStatus==0}">
                         <span style="color:#FF5722;">禁用</span>
@@ -77,7 +81,7 @@
                     </c:otherwise>
                 </c:choose>
             </td>
-            <td>
+            <td width="100">
                 <a href="/admin/user/edit/${u.userId}" class="layui-btn layui-btn-mini">编辑</a>
                 <a href="/admin/user/delete/${u.userId}" class="layui-btn layui-btn-danger layui-btn-mini" onclick="return confirmDelete()">删除</a>
             </td>

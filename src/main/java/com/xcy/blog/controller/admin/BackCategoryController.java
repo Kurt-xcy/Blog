@@ -6,6 +6,7 @@ import com.xcy.blog.pojo.Category;
 import com.xcy.blog.service.ArticleCategoryRefService;
 import com.xcy.blog.service.ArticleService;
 import com.xcy.blog.service.CategoryService;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -53,6 +54,7 @@ public class BackCategoryController {
      * @return
      */
     @RequestMapping(value = "/insertSubmit",method = RequestMethod.POST)
+    @RequiresRoles("admin")
     public String insertCategorySubmit(Category category)  {
         categoryServiceImpl.insertCategory(category);
         return "redirect:/admin/category";
@@ -65,6 +67,7 @@ public class BackCategoryController {
      * @return
      */
     @RequestMapping(value = "/delete/{id}")
+    @RequiresRoles("admin")
     public String deleteCategory(@PathVariable("id") Integer id)  {
         //禁止删除有文章的分类
         int count = articleCategoryRefServiceImpl.countArticleByCategoryId(id);
@@ -103,6 +106,7 @@ public class BackCategoryController {
      * @return 重定向
      */
     @RequestMapping(value = "/editSubmit",method = RequestMethod.POST)
+    @RequiresRoles("admin")
     public String editCategorySubmit(Category category)  {
         categoryServiceImpl.updateCategory(category);
         return "redirect:/admin/category";
