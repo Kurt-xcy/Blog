@@ -1,7 +1,7 @@
 # Blog
 一个SSM博客系统，适合对SSM的初学、熟悉、巩固。<br/>
 本项目是在GitHub中找到的开源项目<https://github.com/saysky/ForestBlog>,非常感谢项目作者。<br/>
-取出项目中前端静态文件，自己重新写业务逻辑，以达到学习目的，目前已经将项目部署到云服务器上，网站链接<http://121.199.57.130/><br/>
+取出项目中前端静态文件，自己重新写业务逻辑，以达到学习目的，目前已经将项目部署到云服务器上，网站链接<http://kurtblog.cn//><br/>
 目前域名正在购买审核，等域名到手后会挂上域名。<br/>
 未来如果学的可以的话可能会加上solr搜索，如果更好一点的话还会加上shiro。可能那时候已经就业找工作了吧，先到时候再说。
 # 项目介绍
@@ -29,6 +29,24 @@ admin后台系统的cookie保存用户密码有点不安全，改成session存�
 
 4)配置的mysql数据库5.X版本，修改路径在\Blog\src\main\resources\db.properties里，
 # sql文件之后会上传
-
-
-
+# 业务介绍
+## 资源加载（拦截器）
+设置了一个mvc拦截器HomeResourceInterceptor，拦截路径为“ /** ”，用于加载菜单，以及网站概况，最新文章等等，加入request中，用于显示。
+```
+<mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="com.xcy.blog.interceptor.HomeResourceInterceptor"/>
+        </mvc:interceptor>
+</mvc:interceptors>
+```
+## 后台登陆（拦截器）
+设置了一个mvc拦截器SecurityInterceptor，拦截路径为“ /admin/** ”，查找请求中是否包含user,没有的话重定向到"/login"，有的话放行。
+```
+<mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/admin/**"/>
+            <bean class="com.xcy.blog.interceptor.SecurityInterceptor"/>
+        </mvc:interceptor>
+</mvc:interceptors>
+```
