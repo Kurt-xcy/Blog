@@ -6,9 +6,11 @@ import com.xcy.blog.VO.UserVO;
 import com.xcy.blog.pojo.Article;
 import com.xcy.blog.pojo.User;
 import com.xcy.blog.service.UserService;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -65,9 +67,14 @@ public class BackUserController {
         ModelAndView modelAndView = new ModelAndView();
 
         User userSession = (User)request.getSession().getAttribute("user");
-        if (userSession.getUserId()!=id){
-            throw new UnauthorizedException();
+
+        Subject subject = SecurityUtils.getSubject();
+        if (!subject.hasRole("admin")){
+            if (userSession.getUserId()!=id){
+                throw new UnauthorizedException();
+            }
         }
+
         //User user =  userServiceImpl.getUserById(id);
         modelAndView.addObject("user",userSession);
 
