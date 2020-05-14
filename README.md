@@ -16,7 +16,7 @@
 可能的话加一个搜索框架<br/>
 
 # 几个注意点
-1）本项目使用IDE。<br/>
+1）本项目使用IDE为IDEA。<br/>
 2）确保 tomcat 配置中 application context 是 /，而不是 /Blog。因为引用css路径都是 /xxx/xxx.css，否则会导致页面没有样式。<br/>
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200426104436606.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDAwMTY4MQ==,size_16,color_FFFFFF,t_70)
 3）uploadfile<br/>
