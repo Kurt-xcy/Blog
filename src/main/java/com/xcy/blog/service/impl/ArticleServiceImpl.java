@@ -46,8 +46,8 @@ public class ArticleServiceImpl implements ArticleService {
         List<Article> articleList = articleMapper.selectByExample(example);
         List<ArticleWithBLOBs> articleWithBLOBsList = articleMapper.selectByExampleWithBLOBs(example);
         for (int i = 0 ; i<articleList.size();i++){
-            articleList.get(i).setArticleContent(articleWithBLOBsList.get(i).getArticleContent());
-            articleList.get(i).setArticleSummary(articleWithBLOBsList.get(i).getArticleSummary());
+            articleList.get(i).setArticleContent(articleWithBLOBsList.get(i+pageSize*(pageIndex-1)).getArticleContent());
+            articleList.get(i).setArticleSummary(articleWithBLOBsList.get(i+pageSize*(pageIndex-1)).getArticleSummary());
         }
         for (Article article:articleList){
 

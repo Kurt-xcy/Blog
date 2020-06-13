@@ -8,6 +8,7 @@ import com.xcy.blog.entity.LinkStatus;
 import com.xcy.blog.entity.NoticeStatus;
 import com.xcy.blog.pojo.*;
 import com.xcy.blog.service.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +20,7 @@ import java.util.List;
 
 
 @Controller
+@Slf4j
 public class IndexController {
 
     @Autowired
@@ -37,6 +39,7 @@ public class IndexController {
     private CommentService commentServiceImpl;
 
     @RequestMapping(value = {"/", "/article"})
+
     public String index(@RequestParam(required = false, defaultValue = "1") Integer pageIndex,
                         @RequestParam(required = false, defaultValue = "10") Integer pageSize, Model model) {
         //文章列表

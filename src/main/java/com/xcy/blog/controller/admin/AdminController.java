@@ -162,6 +162,7 @@ public class AdminController {
     public String logout(HttpServletRequest request){
         //request.getSession().removeAttribute("user");
         Subject subject = SecurityUtils.getSubject();
+        //shiro的logout会清除session
         subject.logout();
         return "redirect:/login";
     }

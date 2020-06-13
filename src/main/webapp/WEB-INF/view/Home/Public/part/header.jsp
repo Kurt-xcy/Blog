@@ -18,6 +18,7 @@
                     </c:when>
                     <c:otherwise>
                         <a href="/admin">进入后台</a>
+                        <a href="/logout">注销</a>
                     </c:otherwise>
                 </c:choose>
                 <a href="https://blog.csdn.net/weixin_44001681" target="_blank" style="color:red;">访问CSDN博客</a>

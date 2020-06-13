@@ -5,6 +5,26 @@
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
+<script type="text/javascript">
+    function show_runtime()
+    {window.setTimeout("show_runtime()", 1000);
+        BirthDay=new Date("04-23-2020"); //这里的时间是指建站日期
+        today=new Date();
+        timeold=(today.getTime()-BirthDay.getTime());
+        sectimeold=timeold/1000
+        secondsold=Math.floor(sectimeold);
+        msPerDay=24*60*60*1000
+        e_daysold=timeold/msPerDay
+        daysold=Math.floor(e_daysold);
+        e_hrsold=(daysold-e_daysold)*-24;
+        hrsold=Math.floor(e_hrsold);
+        e_minsold=(hrsold-e_hrsold)*-60;
+        minsold=Math.floor((hrsold-e_hrsold)*-60);
+        seconds=Math.floor((minsold-e_minsold)*-60);
+        runtime_span.innerHTML=daysold+"天"+hrsold+"小时"+minsold+"分"+seconds+"秒" ;
+    }
+    show_runtime();
+</script>
 <%--博客主体-右侧侧边栏 start--%>
 <div id="sidebar" class="widget-area all-sidebar"
      style="position: relative; overflow: visible; box-sizing: border-box; min-height: 1px;">
@@ -85,6 +105,9 @@
                                         <fmt:formatDate value="${lastUpdateArticle.articleUpdateTime}" pattern="yyyy年MM月dd日"/>
 
                                    </span>
+                </li>
+                <li><i class="fa fa-sun-o" ></i> 网站已运行：
+                    <span id="runtime_span"></span>
                 </li>
             </ul>
         </div>

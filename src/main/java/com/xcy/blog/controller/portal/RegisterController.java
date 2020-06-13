@@ -7,6 +7,8 @@ import com.xcy.blog.pojo.User;
 import com.xcy.blog.service.UserRoleService;
 import com.xcy.blog.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -158,5 +160,14 @@ public class RegisterController {
         uploadFileVO.setTitle(filename);
         uploadFileVO.setSrc(fileUrl);
         return new JsonResult().ok(uploadFileVO);
+    }
+
+    @RequestMapping("/logout")
+    public String logout(){
+        //request.getSession().removeAttribute("user");
+        Subject subject = SecurityUtils.getSubject();
+        //shiro的logout会清除session
+        subject.logout();
+        return "redirect:/";
     }
 }
