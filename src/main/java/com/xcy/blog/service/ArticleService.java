@@ -5,6 +5,7 @@ import com.xcy.blog.VO.UserVO;
 import com.xcy.blog.pojo.Article;
 import com.xcy.blog.pojo.ArticleWithBLOBs;
 import com.xcy.blog.pojo.Category;
+import com.xcy.blog.pojo.User;
 
 import java.util.Date;
 import java.util.List;
@@ -199,4 +200,6 @@ public interface ArticleService {
      * @return
      */
     public Integer updateArticleDetail(Article article);
+
+    public List<Article> listArticleByUser(User user, Integer limit);
 }

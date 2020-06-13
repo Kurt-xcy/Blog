@@ -404,5 +404,16 @@ public class ArticleServiceImpl implements ArticleService {
         return index;
     }
 
+    @Override
+    public List<Article> listArticleByUser(User user, Integer limit) {
+        ArticleExample example = new ArticleExample();
+        example.createCriteria().andArticleUserIdEqualTo(user.getUserId());
+        List<Article> articleList = articleMapper.selectByExample(example);
+        if (articleList.size()>5){
+            articleList = articleList.subList(0,5);
+        }
+        return articleList;
+    }
+
 
 }

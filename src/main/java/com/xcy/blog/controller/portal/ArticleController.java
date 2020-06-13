@@ -64,6 +64,10 @@ public class ArticleController {
         //相关文章
         List<Integer> categoryIds = articleServiceImpl.listCategoryIdByArticleId(articleId);
         List<Article> similarArticleList = articleServiceImpl.listArticleByCategoryIds(categoryIds, 5);
+        //如果该目录下没有文章，返回同作者的其他文章
+        if (similarArticleList==null||similarArticleList.size()==0){
+            similarArticleList = articleServiceImpl.listArticleByUser(article.getUser(),5);
+        }
         model.addAttribute("similarArticleList", similarArticleList);
 
         //猜你喜欢
