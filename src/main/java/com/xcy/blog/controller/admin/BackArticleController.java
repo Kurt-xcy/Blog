@@ -90,7 +90,7 @@ public class BackArticleController {
         }
         article.setArticleTitle(articleParam.getArticleTitle());
         //文章摘要
-        int summaryLength = 150;
+        int summaryLength = 130;
         String summaryText = HtmlUtil.cleanHtmlTag(articleParam.getArticleContent());
         if (summaryText.length() > summaryLength) {
             String summary = summaryText.substring(0, summaryLength);
