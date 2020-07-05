@@ -41,6 +41,7 @@
                     <dd><a href="/admin/link/insert">链接</a></dd>
                 </dl>
             </li>
+            <li class="layui-nav-item"><a href="/admin/article/reorder" target="_self">文章重排序</a></li>
         </ul>
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">

@@ -46,6 +46,7 @@ public class IndexController {
         PageInfo<Article> articleList = articleServiceImpl.pageArticle(pageIndex, pageSize, ArticleStatus.PUBLISH.getValue());
         model.addAttribute("pageInfo", articleList);
 
+
         //公告
         List<Notice> noticeList = noticeServiceImpl.listNoticeByStatus(NoticeStatus.NORMAL.getValue());
         model.addAttribute("noticeList", noticeList);

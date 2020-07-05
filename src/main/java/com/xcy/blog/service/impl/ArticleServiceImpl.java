@@ -9,9 +9,8 @@ import com.xcy.blog.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+
+import java.util.*;
 
 @Service
 public class ArticleServiceImpl implements ArticleService {
@@ -43,6 +42,7 @@ public class ArticleServiceImpl implements ArticleService {
         if (status!=null){
             criteria.andArticleStatusEqualTo(status);
         }
+        example.setOrderByClause("article_order desc");
         List<Article> articleList = articleMapper.selectByExample(example);
         List<ArticleWithBLOBs> articleWithBLOBsList = articleMapper.selectByExampleWithBLOBs(example);
         for (int i = 0 ; i<articleList.size();i++){
@@ -415,5 +415,50 @@ public class ArticleServiceImpl implements ArticleService {
         return articleList;
     }
 
+    //对文章重新排序，依靠设置article_order
+    public Integer reorder(){
+        ArticleExample example = new ArticleExample();
+        example.setOrderByClause("article_create_time desc");
+        List<Article> articleList = articleMapper.selectByExample(example);
+        int order = 10;
+        for (Article article:articleList){
+            if (articleList.indexOf(article)<10){
+                article.setArticleOrder(order--);
+                articleMapper.updateByPrimaryKey(article);
+            }else{
+                article.setArticleOrder(1);
+                articleMapper.updateByPrimaryKey(article);
+            }
 
+
+        }
+
+        //按照viewcount浏览量降序
+        Collections.sort(articleList, new Comparator<Article>() {
+            @Override
+            public int compare(Article o1, Article o2) {
+                return o2.getArticleViewCount()-o1.getArticleViewCount();
+            }
+        });
+        Integer viewMax = articleList.get(0).getArticleViewCount();
+        for (Article article:articleList){
+            article.setArticleOrder(article.getArticleViewCount()*10/viewMax+article.getArticleOrder());
+            articleMapper.updateByPrimaryKey(article);
+        }
+
+        //按照commentcount评论量降序
+        Collections.sort(articleList, new Comparator<Article>() {
+            @Override
+            public int compare(Article o1, Article o2) {
+                return o2.getArticleCommentCount()-o1.getArticleCommentCount();
+            }
+        });
+        Integer countMax = articleList.get(0).getArticleCommentCount();
+        for (Article article:articleList){
+            article.setArticleOrder(article.getArticleCommentCount()*10/countMax+article.getArticleOrder());
+            articleMapper.updateByPrimaryKey(article);
+        }
+
+        return 1;
+    }
 }

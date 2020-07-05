@@ -222,4 +222,14 @@ public class BackArticleController {
         articleServiceImpl.updateArticleDetail(article);
         return "redirect:/admin/article";
     }
+
+    @RequestMapping("/reorder")
+    public String reorder(){
+        //对文章的order重新排序，针对article_order字段
+        Integer sign = articleServiceImpl.reorder();
+
+        return "redirect:/";
+
+
+    }
 }

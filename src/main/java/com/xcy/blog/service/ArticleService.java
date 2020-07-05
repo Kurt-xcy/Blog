@@ -201,5 +201,17 @@ public interface ArticleService {
      */
     public Integer updateArticleDetail(Article article);
 
+    /**
+     * 查询某用户的文章
+     * @param user
+     * @param limit
+     * @return
+     */
     public List<Article> listArticleByUser(User user, Integer limit);
+
+    /**
+     * 对文章进行重排，即对文章对article_order进行设置
+     * @return
+     */
+    public Integer reorder();
 }
